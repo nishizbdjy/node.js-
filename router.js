@@ -22,15 +22,7 @@ function router(req, res) {//服务器中传的req,res
         Show.showInfo(null,res)
 
     } else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
-        fs.readFile(path.join(__dirname, pathname), 'utf-8', (err, data) => {
-            if (err) return console.log(err.message)
-            if (pathname.endsWith('.css')) { //如果是 css 就设置响应头以css解析
-                res.writeHeader(200, {
-                    'Content-Type': 'text/css;charset=utf-8;'
-                })
-            }
-            res.end(data)
-        })
+       Show.loadStaticResource(req, res,pathname)
     } else {
         res.end('404')
     }
