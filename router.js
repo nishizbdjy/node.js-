@@ -7,22 +7,24 @@ const Show = require('./controller')//业务的实现
 function router(req, res) {//服务器中传的req,res
     let url = req.url//路径
     let method = req.method//方式
-    let query = urlm.parse(url, true).query//get请求?后面的值
-    let pathname = urlm.parse(url, true).pathname//get请求?前面的地址
-
+    let query = urlm.parse(url, true).query//get请求   ?后面的值
+    let pathname = urlm.parse(url, true).pathname//get请求 ?前面的地址
+    //暴露 query pathname
+    req.query = query
+    req.pathname = pathname;
     if ((pathname === '/' || pathname === '/index.html' || pathname === '/index') && method === 'GET') {//首页的判断
-        Show.showIndex(null,res)
+        Show.showIndex(req,res)
     } else if ((pathname === '/add' || pathname === '/add.html') && method === 'GET') {//英雄添加页
-        Show.showAdd(null,res)
+        Show.showAdd(req,res)
 
     } else if ((pathname === '/edit' || pathname === '/edit.html') && method === 'GET') {//英雄编辑页
 
-        Show.showEdit(null,res)
+        Show.showEdit(req,res)
     } else if ((pathname === '/info' || pathname === '/info.html') && method === 'GET') {//英雄查看页
-        Show.showInfo(null,res)
+        Show.showInfo(req,res)
 
     } else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
-       Show.loadStaticResource(req, res,pathname)
+       Show.loadStaticResource(req, res)
     } else {
         res.end('404')
     }

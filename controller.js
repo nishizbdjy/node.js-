@@ -2,10 +2,14 @@
 const fs = require('fs')//读写文件
 const path = require('path')//拼接路径模块
 const bindRender = require('./bindRender')//读取数据渲染页面
+const modeData = require('./modelData')//引入处理查看页逻辑
 Show = {   //使用es6新语法
     showIndex(req, res) {//首页
-        fs.readFile(path.join(__dirname, './heros.json'), 'utf-8', (err, data) => {//读取数据
-            if (err) return console.log(err.message);
+        modeData.huoQuQuanBu((err, data) => {
+            if (err) return res.end(JSON.stringify({
+                code: 404,
+                msg: '数据获取失败'
+            }))
             let shuju = JSON.parse(data)
             bindRender('index', { data: shuju }, res)
         })
@@ -19,14 +23,23 @@ Show = {   //使用es6新语法
         bindRender('edit', {}, res)
     },
     showInfo(req, res) {//英雄查看页
+        // 获取id
+        let id = req.query.id
+        modeData.xunhuan(id, (err, data) => {//调用
+            if (err) return res.end(JSON.stringify({//如果有错误信息 返回错误
+                code: 401,
+                msg: '你查找的英雄不存在'
+            }))
 
-        bindRender('info', {}, res)
+            bindRender('info', data, res)//没有错误信息说明成功 渲染到页面
+        })
+
     },
     //js、css 的业务
-    loadStaticResource(req, res,pathname) {//传入req,res请求的路径
-        fs.readFile(path.join(__dirname, pathname), 'utf-8', (err, data) => {
+    loadStaticResource(req, res) {//传入req, req.pathname = pathname 暴露的
+        fs.readFile(path.join(__dirname, req.pathname), 'utf-8', (err, data) => {
             if (err) return console.log(err.message)
-            if (pathname.endsWith('.css')) { //如果是 css 就设置响应头以css解析
+            if (req.pathname.endsWith('.css')) { //如果是 css 就设置响应头以css解析
                 res.writeHeader(200, {
                     'Content-Type': 'text/css;charset=utf-8;'
                 })
