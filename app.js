@@ -10,25 +10,51 @@ server.listen(3010, () => {//监听端口
 server.on('request', (req, res) => {//监听用户请求
     let url = req.url//路径
     let method = req.method//方式
-    let query = urlm.parse(url,true).query//get请求&后面的值
-    let pathname = urlm.parse(url,true).pathname//get请求&前面的地址
+    let query = urlm.parse(url, true).query//get请求&后面的值
+    let pathname = urlm.parse(url, true).pathname//get请求&前面的地址
+    console.log(query)
     console.log(pathname)
     if ((pathname === '/' || pathname === '/index.html' || pathname === '/index') && method === 'GET') {//首页的判断
         // fs.readFile(path.join(__dirname, './views/index.html'), 'utf-8', (err, data) => {
         //     if (err) return console.log(err.massage)
         //     res.end(data)
         // })
-       fs.readFile(path.join(__dirname , './heros.json'),'utf-8',(err,data)=>{//读取数据
-           if(err) return console.log(err.message);
-           let shuju = JSON.parse(data)            //转换为数组   [{}{}{}]   换{obj : [{},{},{}]}
-           console.log({data : shuju})
-           let str = template(path.join(__dirname ,'./views/index.html'),{data : shuju})//渲染模板
-           res.end(str)                           //返回
-       })
-    }else {
+        fs.readFile(path.join(__dirname, './heros.json'), 'utf-8', (err, data) => {//读取数据
+            if (err) return console.log(err.message);
+            let shuju = JSON.parse(data)            //转换为数组   [{}{}{}]   换{obj : [{},{},{}]}
+            let str = template(path.join(__dirname, './views/index.html'), { data: shuju })//渲染模板
+            res.end(str)                           //返回
+        })
+    } else if ((pathname === '/add' || pathname === '/add.html') && method === 'GET') {//英雄添加页
+        fs.readFile(path.join(__dirname, './views/add.html'), 'utf-8', (err, data) => {
+            if (err) return console.log(err.message)
+            res.end(data)
+        })
+    } else if ((pathname === '/edit' || pathname === '/edit.html') && method === 'GET') {//英雄编辑页
+        fs.readFile(path.join(__dirname, './views/edit.html'), 'utf-8', (err, data) => {
+            if (err) return console.log(err.message)
+            res.end(data)
+        })
+    } else if ((pathname === '/info' || pathname === '/info.html') && method === 'GET') {//英雄查看页
+        fs.readFile(path.join(__dirname, './views/info.html'), 'utf-8', (err, data) => {
+            if (err) return console.log(err.message)
+            res.end(data)
+        })
+    } else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
+        fs.readFile(path.join(__dirname, pathname), 'utf-8', (err, data) => {
+            if (err) return console.log(err.message)
+            if (pathname.endsWith('.css')) { //如果是 css 就设置响应头以css解析
+            res.writeHeader(200, {
+             'Content-Type': 'text/css;charset=utf-8;'
+            })
+            }
+            res.end(data)
+        })
+    }  else {
         res.end('404')
     }
 })
+
     // else if ((url === '/add' || url === '/add.html') && method === 'GET') {//add
     //     fs.readFile(path.join(__dirname, './views/add.html'), 'utf-8', (err, data) => {
     //         if (err) return console.log(err.massage)
