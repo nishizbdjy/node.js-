@@ -23,7 +23,9 @@ function router(req, res) {//服务器中传的req,res
     } else if ((pathname === '/info' || pathname === '/info.html') && method === 'GET') {//英雄查看页
         Show.showInfo(req,res)
 
-    } else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
+    } else if(pathname === '/xinjianyingxiong' && method === 'POST'){//添加英雄
+       Show.xinjianyingxiong(req,res)
+    }else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
        Show.loadStaticResource(req, res)
     } else {
         res.end('404')
