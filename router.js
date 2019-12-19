@@ -25,6 +25,8 @@ function router(req, res) {//服务器中传的req,res
 
     } else if(pathname === '/xinjianyingxiong' && method === 'POST'){//添加英雄
        Show.xinjianyingxiong(req,res)
+    }else if (pathname === '/yingxiongbianji' && method === 'POST'){//英雄编辑
+       Show.yingxiongbianji(req,res)
     }else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
        Show.loadStaticResource(req, res)
     } else {

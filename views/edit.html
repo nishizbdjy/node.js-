@@ -15,6 +15,7 @@
   </header>
   <div class="container hero-list">
     <form id="form">
+      <input type="hidden" name="id" value="{{id}}">
       <div class="form-group">
         <label class="col-sm-2 control-label">英雄名称:</label>
         <div class="col-sm-10">
@@ -59,21 +60,23 @@
 </body>
 <script>
   $(function () {
-    // $.ajax({//显示加载数据
-    //   url: '/bianjixianshi',
-    //   type: 'get',
-    //   dataType: 'json',
-    //   success: function (res) {
-    //     console.log(res)
-    //   }
-    // })
-    // $('.btn').on('click', function (e) {
-    //   e.preventDefault()
-    //   let shuju = $('#form').serialize()
-    //   console.log(shuju)
-
-
-    // })
+    $('.btn').on('click', function (e) {
+      e.preventDefault()
+      let shuju = $('#form').serialize()
+      $.ajax({
+        url: '/yingxiongbianji',
+        type: 'post',
+        data :shuju,
+        dataType: 'json',
+        success: function (res) {
+          console.log(res)
+          if(res.code === 200){
+            console.log(res)
+            location.href = './index.html'
+          }
+        }
+      })
+    })
   })//
 </script>
 

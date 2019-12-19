@@ -2,7 +2,7 @@
 const fs = require('fs')//读写文件
 const path = require('path')//拼接路径模块
 const bindRender = require('./bindRender')//读取数据渲染页面
-const modeData = require('./modelData')//引入处理查看页逻辑
+const modeData = require('./modelData')//引入处理逻辑
 const querystring = require('querystring')//post请求获取url后内容
 Show = {   //使用es6新语法
     showIndex(req, res) {//首页
@@ -43,7 +43,26 @@ Show = {   //使用es6新语法
             if (err) return console.log('数据加载失败')
             bindRender('edit', data, res)            
         })
-        
+    },
+    yingxiongbianji(req,res){//英雄编辑
+      let str = '';
+      req.on('data',chunk=>{
+        str+=chunk
+      })
+      req.on('end',()=>{
+          let shuju = querystring.parse(str)
+          modeData.yingxiongbianji(shuju,(err)=>{
+              if(err) return res.end(JSON.stringify({
+                  code : 200,
+                  msg : '修改成功'
+              }))
+              res.end(JSON.stringify({
+                  code : 401,
+                  msg : '修改失败'
+              }))
+          })
+      })
+    
     },
     showInfo(req, res) {//英雄查看页
         let id = req.query.id// 获取id

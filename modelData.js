@@ -36,12 +36,29 @@ module.exports = {
             shuju.id = (+datadx[datadx.length - 1].id + 1).toString()//ID = 数组的长度-1:最后一个,的ID+1
             datadx.push(shuju)//将新英雄数据添加到数组    id要转换为字符串
             //重新写到
-            fs.writeFile(path.join(__dirname , './heros.json'),JSON.stringify(datadx),(err)=>{//写入进去要在转换为字符串 
-                if(err) return callback(false)
+            fs.writeFile(path.join(__dirname, './heros.json'), JSON.stringify(datadx), (err) => {//写入进去要在转换为字符串 
+                if (err) return callback(false)
                 callback(true)
             })
         })
     },
-    //编辑显示
-
+    //英雄编辑
+    yingxiongbianji(shuju, callback) {
+        this.huoQuQuanBu((err, data) => {//data所有的数据
+            if (err) return callback(false)
+            let datadx = JSON.parse(data)
+            shuju.date = moment().format('YYYY-MM-DD HH:mm:ss')//添加时间
+            let { id } = shuju;//拿到请求的ID
+            datadx.some((item, index) => {
+                if (id == item.id) {
+                    datadx.splice(index, 1, shuju)//从哪里截取，截取多少个，替换的数据
+                    return
+                }
+            })
+            fs.writeFile(path.join(__dirname, './heros.json'), JSON.stringify(datadx), 'utf-8', (err) => {
+                if (err) return callback(false)
+                callback(true)
+            }) //将数据写回去 
+        })
+    }
 }//暴露
