@@ -27,18 +27,23 @@ Show = {   //使用es6新语法
             shuju = querystring.parse(shuju)//将数据转换为对象
             modeData.xinjianyingxiong(shuju, (sfcg) => {
                 if (sfcg) res.end(JSON.stringify({
-                    code : 200,
-                    msg :'新增成功'
+                    code: 200,
+                    msg: '新增成功'
                 }))
                 res.end(JSON.stringify({
-                    code : 404,
-                    msg :'新增失败'
+                    code: 404,
+                    msg: '新增失败'
                 }))
             })
         })
     },
-    showEdit(req, res) {//英雄编辑页
-        bindRender('edit', {}, res)
+    showEdit(req, res) {//英雄编辑页 
+        let { id } = req.query
+        modeData.xunhuan(id, (err,data) => {
+            if (err) return console.log('数据加载失败')
+            bindRender('edit', data, res)            
+        })
+        
     },
     showInfo(req, res) {//英雄查看页
         let id = req.query.id// 获取id

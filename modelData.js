@@ -31,9 +31,8 @@ module.exports = {
         //获取全部数据
         this.huoQuQuanBu((err, data) => {
             if (err) return callback(false)//没用获取到json数据
-            console.log(data)
             let datadx = JSON.parse(data)//转换为对象
-            shuju.date = moment().format('YYYY-MM-DD hh:mm:ss')//时间 
+            shuju.date = moment().format('YYYY-MM-DD HH:mm:ss')//时间 
             shuju.id = (+datadx[datadx.length - 1].id + 1).toString()//ID = 数组的长度-1:最后一个,的ID+1
             datadx.push(shuju)//将新英雄数据添加到数组    id要转换为字符串
             //重新写到
@@ -42,5 +41,7 @@ module.exports = {
                 callback(true)
             })
         })
-    }
+    },
+    //编辑显示
+
 }//暴露
