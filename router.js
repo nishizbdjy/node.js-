@@ -13,22 +13,24 @@ function router(req, res) {//服务器中传的req,res
     req.query = query
     req.pathname = pathname;
     if ((pathname === '/' || pathname === '/index.html' || pathname === '/index') && method === 'GET') {//首页的判断
-        Show.showIndex(req,res)
+        Show.showIndex(req, res)
     } else if ((pathname === '/add' || pathname === '/add.html') && method === 'GET') {//英雄添加页
-        Show.showAdd(req,res)
+        Show.showAdd(req, res)
 
     } else if ((pathname === '/edit' || pathname === '/edit.html') && method === 'GET') {//英雄编辑页
 
-        Show.showEdit(req,res)
+        Show.showEdit(req, res)
     } else if ((pathname === '/info' || pathname === '/info.html') && method === 'GET') {//英雄查看页
-        Show.showInfo(req,res)
+        Show.showInfo(req, res)
 
-    } else if(pathname === '/xinjianyingxiong' && method === 'POST'){//添加英雄
-       Show.xinjianyingxiong(req,res)
-    }else if (pathname === '/yingxiongbianji' && method === 'POST'){//英雄编辑
-       Show.yingxiongbianji(req,res)
-    }else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
-       Show.loadStaticResource(req, res)
+    } else if (pathname === '/xinjianyingxiong' && method === 'POST') {//添加英雄
+        Show.xinjianyingxiong(req, res)
+    } else if (pathname === '/yingxiongbianji' && method === 'POST') {//英雄编辑
+        Show.yingxiongbianji(req, res)
+    } else if (pathname.startsWith('/node_modules') && method === 'GET') {// 样式以node开头的
+        Show.loadStaticResource(req, res)
+    } else if (pathname === '/shanchuyingxiong' && method === 'GET') {//删除英雄
+        Show.shanchuyingxiong(req, res)
     } else {
         res.end('404')
     }

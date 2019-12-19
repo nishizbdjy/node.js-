@@ -37,13 +37,35 @@
           <td>
             <a href="./info.html?id={{u.id}}">查看</a>
             <a href="./edit.html?id={{u.id}}">编辑</a>
-            <a href="javascript:(0);">删除</a>
+            <a href="javascript:(0);" data-id="{{u.id}}" class="btn-del">删除</a>
           </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
   </div>
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
 </body>
+<script>
+  $(function () {
+    $('.btn-del').on('click', function () {//不需要用委托
+      let id = $(this).data('id')
+      console.log(id)
+      $.ajax({
+        url: 'shanchuyingxiong',
+        type: 'get',
+        data: {
+          id: id,
+        },
+        dataType: 'json',
+        success: function (res) {
+           window.location.reload() //删除成功刷新页面
+        }
+      })
+
+    })
+
+  })
+</script>
 
 </html>

@@ -60,5 +60,23 @@ module.exports = {
                 callback(true)
             }) //将数据写回去 
         })
+    },
+    //删除英雄
+    shanchuyingxiong(id,callback){
+    this.huoQuQuanBu((err,data)=>{
+        if(err) return callback(false)
+        let datadx = JSON.parse(data)
+        datadx.some((item,index)=>{
+         if(id === item.id){
+            datadx.splice(index,1)//找到符合ID的索引，删除
+            return;
+         }
+        })
+        //填回去
+        fs.writeFile(path.join(__dirname,'./heros.json'),JSON.stringify(datadx),'utf-8',(err)=>{
+            if(err) return callback(false)
+            callback(true)
+        })
+    })
     }
 }//暴露

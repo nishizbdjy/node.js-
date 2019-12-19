@@ -74,6 +74,21 @@ Show = {   //使用es6新语法
             bindRender('info', data, res)//没有错误信息说明成功 渲染到页面
         })
     },
+    //英雄删除
+    shanchuyingxiong(req,res){
+     let {id} = req.query
+     modeData.shanchuyingxiong(id,(err)=>{
+         if(err) return res.end(JSON.stringify({
+             code : 200,
+             msg : '删除成功',
+         }))
+         res.end(JSON.stringify({
+             code : 401,
+             msg : '删除失败',
+         }))
+
+     })
+    },
     //js、css 的业务
     loadStaticResource(req, res) {//传入req, req.pathname = pathname 暴露的
         fs.readFile(path.join(__dirname, req.pathname), 'utf-8', (err, data) => {
